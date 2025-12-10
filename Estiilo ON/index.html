@@ -324,13 +324,11 @@
         import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, collection, addDoc, onSnapshot, doc, updateDoc, deleteDoc, getDocs, query } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        const firebaseConfig = JSON.parse(__firebase_config);
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+        // CONFIGURAÇÃO SEGURA PARA NETLIFY/STATIC
+        let firebaseApp, firebaseAuth, firebaseDb, firebaseAppId;
+        let isFirebaseAvailable = false;
 
-        // Produtos Padrão (Fallback Robust)
+        // Produtos Padrão (Local Fallback)
         const defaultProducts = [
             { id: "p1", name: "Costume Noir Slim", category: "camisas", price: 899.90, image: "https://i.ibb.co/vCPGbrtf/eestiloversatil-501275211-17864956095393827-6671465347994657498-n.jpg", sizes: "P, M, G, GG" },
             { id: "p2", name: "Camisa Casual Texture", category: "camisas", price: 249.90, image: "https://i.ibb.co/QFd7677r/eestiloversatil-501061829-17864956347393827-5912497989800767435-n.jpg", sizes: "P, M, G, GG" },
@@ -344,7 +342,7 @@
         ];
 
         let products = [];
-        let displayProducts = [...defaultProducts]; // Inicializa com local para não ficar vazio
+        let displayProducts = [...defaultProducts]; // Inicializa sempre com fallback
 
         let siteConfig = {
             logo: "https://i.ibb.co/XfsFCjLy/Estilo-ver.png",
@@ -354,33 +352,61 @@
         };
         let configDocId = null;
 
+        // Inicialização Segura
+        try {
+            if (typeof __firebase_config !== 'undefined' && __firebase_config) {
+                const config = JSON.parse(__firebase_config);
+                firebaseApp = initializeApp(config);
+                firebaseAuth = getAuth(firebaseApp);
+                firebaseDb = getFirestore(firebaseApp);
+                firebaseAppId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+                isFirebaseAvailable = true;
+            } else {
+                console.warn("Configuração do Firebase não encontrada. Usando modo offline.");
+                // Força render inicial em modo offline
+                window.renderProducts();
+            }
+        } catch (e) {
+            console.error("Erro ao inicializar Firebase:", e);
+            // Modo offline em caso de erro
+            window.renderProducts();
+        }
+
         const initAuth = async () => {
+            if (!isFirebaseAvailable) return;
             try {
                 if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-                    await signInWithCustomToken(auth, __initial_auth_token);
+                    await signInWithCustomToken(firebaseAuth, __initial_auth_token);
                 } else {
-                    await signInAnonymously(auth);
+                    await signInAnonymously(firebaseAuth);
                 }
             } catch (error) {
-                console.error("Auth initialization failed", error);
-                // Fallback imediato em erro de auth
-                displayProducts = defaultProducts;
-                window.renderProducts();
+                console.error("Falha na autenticação", error);
+                // Continua com modo offline se auth falhar
             }
         };
 
-        let listenersSetup = false;
-        onAuthStateChanged(auth, (user) => {
-            if (user && !listenersSetup) {
-                setupRealtimeListeners();
-                listenersSetup = true;
-            }
-        });
-
-        initAuth();
+        if (isFirebaseAvailable) {
+            let listenersSetup = false;
+            onAuthStateChanged(firebaseAuth, (user) => {
+                if (user && !listenersSetup) {
+                    setupRealtimeListeners();
+                    listenersSetup = true;
+                }
+            });
+            initAuth();
+        } else {
+            // Se Firebase não estiver disponível, renderiza imediatamente
+            window.onload = () => {
+                window.renderProducts();
+                window.applySiteConfig();
+            };
+        }
 
         function setupRealtimeListeners() {
-            const prodCol = collection(db, 'artifacts', appId, 'public', 'data', 'products');
+            if (!isFirebaseAvailable) return;
+
+            const prodCol = collection(firebaseDb, 'artifacts', firebaseAppId, 'public', 'data', 'products');
             onSnapshot(prodCol, (snapshot) => {
                 const dbProducts = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
                 
@@ -388,21 +414,18 @@
                     products = dbProducts;
                     displayProducts = products;
                 } else {
-                    // DB vazia. Tentar seed se possível, senão usar default
-                    if (!localStorage.getItem('seeded')) {
-                        window.forceSeed().catch(e => console.log("Seed falhou (provavelmente permissões), usando local"));
-                    }
+                    // Se DB vazia, pode usar default
                     displayProducts = defaultProducts;
                 }
                 window.renderProducts();
                 window.renderAdminList();
             }, (err) => {
-                console.error("Erro ao ler produtos (permissões?), usando padrão local", err);
+                console.warn("Usando produtos locais devido a erro:", err);
                 displayProducts = defaultProducts;
                 window.renderProducts();
             });
 
-            const configCol = collection(db, 'artifacts', appId, 'public', 'data', 'site_config');
+            const configCol = collection(firebaseDb, 'artifacts', firebaseAppId, 'public', 'data', 'site_config');
             onSnapshot(configCol, (snapshot) => {
                 if (!snapshot.empty) {
                     const docData = snapshot.docs[0];
@@ -410,25 +433,13 @@
                     configDocId = docData.id;
                     window.applySiteConfig();
                 }
-            }, (err) => console.error("Config error", err));
+            }, (err) => console.warn("Erro config (usando padrão):", err));
         }
 
         // --- Expose to Window ---
-        window.forceSeed = async () => {
-            const prodCol = collection(db, 'artifacts', appId, 'public', 'data', 'products');
-            try {
-                for (const p of defaultProducts) {
-                    const { id, ...data } = p; // Remove ID local
-                    await addDoc(prodCol, data);
-                }
-                localStorage.setItem('seeded', 'true');
-                console.log("Base de dados populada");
-            } catch (e) {
-                console.error("Erro ao semear:", e);
-            }
-        };
-
         window.saveProductData = async () => {
+            if (!isFirebaseAvailable) { alert("Modo offline: Alterações não serão salvas na nuvem."); return; }
+            
             const name = document.getElementById('new-prod-name').value;
             const price = parseFloat(document.getElementById('new-prod-price').value);
             const image = document.getElementById('new-prod-img').value;
@@ -438,7 +449,7 @@
             if (!name || isNaN(price) || !image) { alert('Preencha os campos!'); return; }
 
             const prodData = { name, price, image, category, sizes: sizes || "Padrão" };
-            const prodCol = collection(db, 'artifacts', appId, 'public', 'data', 'products');
+            const prodCol = collection(firebaseDb, 'artifacts', firebaseAppId, 'public', 'data', 'products');
 
             try {
                 if (window.editingProductId) {
@@ -449,18 +460,20 @@
                     alert('Produto adicionado!');
                 }
                 window.resetForm();
-            } catch (e) { alert('Erro ao salvar (verifique permissões): ' + e.message); }
+            } catch (e) { alert('Erro ao salvar: ' + e.message); }
         };
 
         window.deleteProduct = async (id) => {
+            if (!isFirebaseAvailable) { alert("Modo offline: Não é possível deletar."); return; }
             if(confirm('Remover produto?')) {
                 try {
-                    await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'products', id));
+                    await deleteDoc(doc(firebaseDb, 'artifacts', firebaseAppId, 'public', 'data', 'products', id));
                 } catch (e) { alert('Erro: ' + e.message); }
             }
         };
 
         window.saveSiteConfig = async () => {
+            if (!isFirebaseAvailable) { alert("Modo offline: Configurações não serão salvas."); return; }
             const logo = document.getElementById('config-logo').value;
             const heroBg = document.getElementById('config-bg').value;
             const whatsapp = document.getElementById('config-whatsapp').value;
@@ -469,7 +482,7 @@
             if(!logo || !heroBg || !whatsapp || !instagram) { alert("Preencha tudo."); return; }
 
             const newConfig = { logo, heroBg, whatsapp, instagram };
-            const configCol = collection(db, 'artifacts', appId, 'public', 'data', 'site_config');
+            const configCol = collection(firebaseDb, 'artifacts', firebaseAppId, 'public', 'data', 'site_config');
 
             try {
                 if (configDocId) {
@@ -496,7 +509,6 @@
             const instaLink = document.getElementById('footer-insta-link');
             if(instaLink) instaLink.href = siteConfig.instagram;
 
-            // Admin fields
             if(document.getElementById('config-logo')) document.getElementById('config-logo').value = siteConfig.logo;
             if(document.getElementById('config-bg')) document.getElementById('config-bg').value = siteConfig.heroBg;
             if(document.getElementById('config-whatsapp')) document.getElementById('config-whatsapp').value = siteConfig.whatsapp;
@@ -520,7 +532,6 @@
             }
 
             filtered.forEach(p => {
-                // Se id não existe (no caso de fallback local sem DB), usa um aleatório ou index
                 const pId = p.id || 'local-' + Math.random().toString(36).substr(2, 9);
                 const card = `
                 <div class="group bg-white rounded-xl shadow-lg hover:shadow-2xl transition duration-300 overflow-hidden flex flex-col h-full border border-gray-100">
@@ -562,6 +573,7 @@
         };
 
         window.editProduct = (id) => {
+            if (!isFirebaseAvailable) { alert("Edição não disponível no modo offline."); return; }
             const prod = products.find(p => p.id === id);
             if (!prod) return;
             window.editingProductId = id;
@@ -598,27 +610,11 @@
         window.cart = [];
         window.addToCart = (id) => {
             let product = displayProducts.find(p => p.id === id);
-            if (!product && id.startsWith('local-')) {
-                 // Recuperar de displayProducts pelo id simulado
-                 // Se não tiver id na prop, usa um método alternativo (não ideal mas funcional para fallback)
-            }
-            // Simplificação: Se estamos no fallback, o ID pode ser o nome ou índice.
-            // Para robustez total no modo fallback:
             if (!product) {
                  product = displayProducts.find(p => p.id === id || ('local-'+Math.random()).includes('local')); 
-                 // Na verdade, quando renderizamos o fallback, atribuímos IDs 'local-xyz'.
-                 // Precisamos encontrar esse item na lista displayProducts.
-                 // Como displayProducts é recriado ou é estático, podemos não ter persistência do ID gerado aleatoriamente.
-                 // CORREÇÃO RÁPIDA PARA FALLBACK: Usar o índice se ID não encontrado na DB
             }
             
-            // Re-finding logic for fallback stability
             if(!product) {
-               // Try finding by properties match if ID fails
-               // This part is tricky without persistent local IDs.
-               // Let's assume user clicks on rendered card which has the ID.
-               // We will simply ensure renderProducts attaches the object itself or index? No, can't pass obj easily.
-               // We will stick to the fact that displayProducts IS the source of truth.
                product = displayProducts.find(p => p.id === id);
             }
 
@@ -744,8 +740,7 @@
             document.getElementById('admin-panel').classList.add('hidden');
         };
         
-        // Initial render
-        window.renderProducts();
+        // Initial render called automatically if offline logic triggers
     </script>
 </body>
 </html>
