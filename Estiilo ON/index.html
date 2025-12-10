@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estilo Versátil | Moda Masculina</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary-dark': '#1A1A1A',
+                        'secondary-light': '#F8F8F8',
+                        'accent': '#6B7280',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    animation: {
+                        'marquee': 'marquee 25s linear infinite',
+                        'fade-in-up': 'fadeInUp 1s ease-out forwards',
+                    },
+                    keyframes: {
+                        marquee: {
+                            '0%': { transform: 'translateX(0%)' },
+                            '100%': { transform: 'translateX(-100%)' },
+                        },
+                        fadeInUp: {
+                            '0%': { opacity: '0', transform: 'translateY(20px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+        
+        .modal { transition: opacity 0.25s ease; }
+        body.modal-active { overflow-x: hidden; overflow-y: visible !important; }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #888; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #555; }
+        .slide-up { animation: slideUp 0.3s ease-out forwards; }
+        @keyframes slideUp {
+            from { transform: translateY(100%); }
+            to { transform: translateY(0); }
+        }
+        .mask-linear-gradient {
+            mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+            -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+        }
+    </style>
+</head>
+<body class="bg-secondary-light text-primary-dark font-sans flex flex-col min-h-screen pb-20">
+
+    <!-- Cabeçalho -->
+    <header class="sticky top-0 z-40 bg-primary-dark shadow-xl overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-24 gap-4"> 
+                <a href="#" class="flex items-center shrink-0 z-20 bg-primary-dark pr-4">
+                    <img id="header-logo" src="https://i.ibb.co/XfsFCjLy/Estilo-ver.png" 
+                         alt="Estilo Versátil Logo" 
+                         class="h-20 md:h-24 w-auto object-contain bg-white/10 rounded p-1 hover:scale-105 transition">
+                </a>
+
+                <div class="flex-grow overflow-hidden relative h-full flex items-center mask-linear-gradient">
+                    <div class="flex whitespace-nowrap animate-marquee">
+                        <span class="text-gray-400 font-bold uppercase tracking-widest text-sm mx-8">NIKE</span>
+                        <span class="text-gray-400 font-bold uppercase tracking-widest text-sm mx-8">ADIDAS</span>
+                        <span class="text-gray-400 font-bold uppercase tracking-widest text-sm mx-8">PUMA</span>
+                        <span class="text-gray-400 font-bold uppercase tracking-widest text-sm mx-8">LACOSTE</span>
+                        <span class="text-gray-400 font-bold uppercase tracking-widest text-sm mx-8">COLCCI</span>
+                        <span class="text-gray-400 font-bold uppercase tracking-widest text-sm mx-8">HERING</span>
+                        <span class="text-gray-400 font-bold uppercase tracking-widest text-sm mx-8">TOMMY HILFIGER</span>
+                        <span class="text-gray-400 font-bold uppercase tracking-widest text-sm mx-8">NIKE</span>
+                        <span class="text-gray-400 font-bold uppercase tracking-widest text-sm mx-8">ADIDAS</span>
+                        <span class="text-gray-400 font-bold uppercase tracking-widest text-sm mx-8">PUMA</span>
+                        <span class="text-gray-400 font-bold uppercase tracking-widest text-sm mx-8">LACOSTE</span>
+                        <span class="text-gray-400 font-bold uppercase tracking-widest text-sm mx-8">COLCCI</span>
+                        <span class="text-gray-400 font-bold uppercase tracking-widest text-sm mx-8">HERING</span>
+                        <span class="text-gray-400 font-bold uppercase tracking-widest text-sm mx-8">TOMMY HILFIGER</span>
+                    </div>
+                </div>
+                
+                <div class="flex items-center space-x-6 z-20 bg-primary-dark pl-4">
+                    <button onclick="toggleCart()" class="relative text-secondary-light hover:text-green-400 transition duration-300 flex flex-col items-center">
+                        <div class="relative">
+                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+                            <span id="cart-count" class="absolute -top-2 -right-2 bg-red-600 text-white text-[10px] font-bold rounded-full h-4 w-4 flex items-center justify-center border-2 border-primary-dark">0</span>
+                        </div>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow">
+        <!-- Hero Section -->
+        <section class="relative bg-primary-dark py-16 px-4 text-center text-secondary-light flex flex-col items-center overflow-hidden min-h-[400px] justify-center">
+            <div class="absolute inset-0 z-0">
+                <img id="hero-bg" src="https://images.unsplash.com/photo-1507679799987-c73779587ccf?q=80&w=2071&auto=format&fit=crop" 
+                     alt="Moda Masculina Background" 
+                     class="w-full h-full object-cover opacity-20 grayscale">
+                <div class="absolute inset-0 bg-gradient-to-t from-primary-dark via-transparent to-primary-dark opacity-90"></div>
+            </div>
+
+            <div class="relative z-10 flex flex-col items-center w-full">
+                <img id="hero-logo" src="https://i.ibb.co/XfsFCjLy/Estilo-ver.png" 
+                     alt="Logo Grande" class="h-40 md:h-64 w-auto object-contain mb-6 drop-shadow-2xl animate-fade-in-up mx-auto">
+                <p class="text-gray-300 uppercase tracking-[0.3em] text-sm md:text-base font-medium border-t border-b border-gray-600 py-2 inline-block animate-fade-in-up" style="animation-delay: 0.2s;">
+                    Moda masculina para todos os momentos
+                </p>
+            </div>
+        </section>
+
+        <!-- Barra de Pesquisa -->
+        <section class="bg-secondary-light pt-8 pb-4 px-4">
+            <div class="max-w-md mx-auto relative">
+                <input type="text" placeholder="Pesquisar produto..." 
+                       class="w-full bg-white border border-gray-300 rounded-full py-3 px-12 focus:outline-none focus:ring-2 focus:ring-primary-dark shadow-sm"
+                       onkeyup="filterProducts(this.value)">
+                <svg class="w-6 h-6 text-gray-400 absolute left-4 top-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+            </div>
+        </section>
+
+        <!-- Filtros -->
+        <section class="pb-6 pt-2 bg-secondary-light shadow-sm sticky top-24 z-30 overflow-x-auto">
+            <div class="max-w-7xl mx-auto px-4 flex space-x-2 md:justify-center min-w-max">
+                <button onclick="filterCategory('todos')" class="cat-btn px-4 py-2 rounded-full text-sm font-semibold bg-primary-dark text-white border border-primary-dark whitespace-nowrap transition transform hover:scale-105">Todos</button>
+                <button onclick="filterCategory('camisas')" class="cat-btn px-4 py-2 rounded-full text-sm font-semibold bg-white text-gray-700 border border-gray-300 hover:bg-gray-100 whitespace-nowrap transition transform hover:scale-105">Camisas</button>
+                <button onclick="filterCategory('calcas')" class="cat-btn px-4 py-2 rounded-full text-sm font-semibold bg-white text-gray-700 border border-gray-300 hover:bg-gray-100 whitespace-nowrap transition transform hover:scale-105">Calças</button>
+                <button onclick="filterCategory('shorts')" class="cat-btn px-4 py-2 rounded-full text-sm font-semibold bg-white text-gray-700 border border-gray-300 hover:bg-gray-100 whitespace-nowrap transition transform hover:scale-105">Shorts</button>
+                <button onclick="filterCategory('tenis')" class="cat-btn px-4 py-2 rounded-full text-sm font-semibold bg-white text-gray-700 border border-gray-300 hover:bg-gray-100 whitespace-nowrap transition transform hover:scale-105">Tênis</button>
+                <button onclick="filterCategory('acessorios')" class="cat-btn px-4 py-2 rounded-full text-sm font-semibold bg-white text-gray-700 border border-gray-300 hover:bg-gray-100 whitespace-nowrap transition transform hover:scale-105">Acessórios</button>
+            </div>
+        </section>
+
+        <!-- Grid de Produtos -->
+        <section id="produtos-container" class="py-8 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div id="products-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+                <!-- Estado inicial visual enquanto carrega -->
+                <div class="col-span-full text-center text-gray-500 py-20 flex flex-col items-center">
+                    <svg class="animate-spin h-10 w-10 text-primary-dark mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    <p>A carregar coleção...</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Sticky Checkout -->
+    <div id="sticky-checkout-bar" class="fixed bottom-0 left-0 right-0 bg-white shadow-[0_-4px_10px_rgba(0,0,0,0.1)] z-50 hidden slide-up border-t border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex flex-col">
+                <span class="text-xs text-gray-500 font-medium">Total do Pedido</span>
+                <span id="sticky-total" class="text-xl font-extrabold text-primary-dark">R$ 0,00</span>
+            </div>
+            <button onclick="toggleCart()" class="bg-[#25D366] text-white px-6 py-3 rounded-full font-bold shadow-lg hover:bg-green-600 transition flex items-center gap-2 transform active:scale-95">
+                <span>Finalizar</span>
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+            </button>
+        </div>
+    </div>
+
+    <!-- Modal Carrinho -->
+    <div id="cart-modal" class="fixed inset-0 z-[60] hidden overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+        <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <div class="fixed inset-0 bg-gray-900 bg-opacity-75 transition-opacity" onclick="toggleCart()"></div>
+            <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg w-full">
+                <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                    <div class="flex justify-between items-center mb-4 border-b pb-2">
+                        <h3 class="text-xl font-bold text-gray-900" id="modal-title">Seu Carrinho</h3>
+                        <button onclick="toggleCart()" class="text-gray-400 hover:text-gray-600">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                        </button>
+                    </div>
+                    <div id="cart-items" class="mt-2 max-h-60 overflow-y-auto space-y-4">
+                        <p class="text-gray-500 text-center py-4">Seu carrinho está vazio.</p>
+                    </div>
+                    <div id="cart-footer" class="mt-6 pt-4 border-t border-gray-200 hidden">
+                        <div class="flex justify-between text-lg font-bold text-primary-dark mb-4">
+                            <span>Total:</span>
+                            <span id="cart-total">R$ 0,00</span>
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Forma de Entrega</label>
+                            <select id="delivery-option" onchange="toggleAddressInput()" class="w-full border border-gray-300 rounded-md p-2 bg-white">
+                                <option value="retirada">Retirar na Loja</option>
+                                <option value="entrega">Entregar (Delivery)</option>
+                            </select>
+                        </div>
+                        <div id="address-input-group" class="mb-4 hidden">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Endereço de Entrega</label>
+                            <textarea id="delivery-address" rows="2" placeholder="Rua, Número, Bairro e Ponto de Referência" class="w-full border border-gray-300 rounded-md p-2"></textarea>
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Forma de Pagamento</label>
+                            <select id="payment-method" onchange="toggleChangeInput()" class="w-full border border-gray-300 rounded-md p-2 bg-white">
+                                <option value="Pix">Pix</option>
+                                <option value="Cartão">Cartão de Crédito/Débito</option>
+                                <option value="Dinheiro">Dinheiro</option>
+                            </select>
+                        </div>
+                        <div id="change-input-group" class="mb-4 hidden">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Troco para quanto?</label>
+                            <div class="relative">
+                                <span class="absolute left-3 top-2 text-gray-500">R$</span>
+                                <input type="number" id="change-amount" placeholder="Ex: 50.00" class="w-full pl-8 border border-gray-300 rounded-md p-2">
+                            </div>
+                        </div>
+                        <button onclick="checkoutWhatsApp()" class="w-full bg-[#25D366] text-white font-bold py-3 rounded-lg hover:bg-green-600 transition flex justify-center items-center gap-2 shadow-md">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.017-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+                            Finalizar Pedido no WhatsApp
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Login -->
+    <div id="admin-login-modal" class="fixed inset-0 z-[70] hidden overflow-y-auto">
+        <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center">
+            <div class="fixed inset-0 bg-black bg-opacity-80 transition-opacity" onclick="closeAdminModal()"></div>
+            <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-md w-full p-6">
+                <div class="text-center mb-6">
+                    <div class="bg-gray-100 p-3 rounded-full inline-block">
+                        <svg class="w-8 h-8 text-primary-dark" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+                    </div>
+                </div>
+                <h3 class="text-xl font-bold mb-4 text-center">Acesso Administrativo</h3>
+                <input type="password" id="admin-password" placeholder="Digite a senha (1234)" class="w-full border p-2 rounded mb-4 focus:ring-2 focus:ring-primary-dark outline-none">
+                <button onclick="checkAdminLogin()" class="w-full bg-primary-dark text-white py-2 rounded hover:bg-black font-bold">ENTRAR</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Painel Admin -->
+    <div id="admin-panel" class="fixed inset-0 z-[70] hidden overflow-y-auto bg-gray-100">
+        <div class="min-h-screen p-4 sm:p-8">
+            <div class="max-w-4xl mx-auto bg-white rounded-xl shadow-2xl p-6">
+                <div class="flex justify-between items-center mb-6 border-b pb-4">
+                    <h2 class="text-2xl font-bold text-primary-dark flex items-center gap-2">Painel de Controle</h2>
+                    <button onclick="logoutAdmin()" class="text-red-500 hover:text-red-700 font-semibold px-4 py-1 border border-red-200 rounded hover:bg-red-50">Sair</button>
+                </div>
+
+                <!-- Configs -->
+                <div class="mb-8 border-b pb-8">
+                    <h3 class="font-bold text-lg mb-4 text-primary-dark">Configurações do Site</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 bg-gray-50 p-4 rounded-lg">
+                        <div><label class="block text-xs font-bold text-gray-500 mb-1">LINK DA LOGO</label><input type="text" id="config-logo" class="w-full border p-2 rounded"></div>
+                        <div><label class="block text-xs font-bold text-gray-500 mb-1">LINK IMAGEM FUNDO</label><input type="text" id="config-bg" class="w-full border p-2 rounded"></div>
+                        <div><label class="block text-xs font-bold text-gray-500 mb-1">WHATSAPP</label><input type="text" id="config-whatsapp" class="w-full border p-2 rounded"></div>
+                        <div><label class="block text-xs font-bold text-gray-500 mb-1">INSTAGRAM</label><input type="text" id="config-instagram" class="w-full border p-2 rounded"></div>
+                        <div class="md:col-span-2"><button onclick="saveSiteConfig()" class="w-full bg-blue-600 text-white font-bold py-2 rounded hover:bg-blue-700 transition">Salvar Configurações</button></div>
+                    </div>
+                </div>
+
+                <!-- Produtos -->
+                <div class="bg-gray-50 p-6 rounded-lg mb-8 border border-gray-200 shadow-sm">
+                    <h3 class="font-bold mb-4 text-lg" id="form-title">Adicionar Novo Produto</h3>
+                    <input type="hidden" id="edit-prod-id">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div><label class="block text-xs font-bold text-gray-500 mb-1">NOME</label><input type="text" id="new-prod-name" class="w-full border p-2 rounded"></div>
+                        <div><label class="block text-xs font-bold text-gray-500 mb-1">PREÇO</label><input type="number" id="new-prod-price" class="w-full border p-2 rounded"></div>
+                        <div><label class="block text-xs font-bold text-gray-500 mb-1">IMAGEM</label><input type="text" id="new-prod-img" class="w-full border p-2 rounded"></div>
+                        <div><label class="block text-xs font-bold text-gray-500 mb-1">CATEGORIA</label>
+                            <select id="new-prod-cat" class="w-full border p-2 rounded" onchange="updateSizePlaceholder()">
+                                <option value="camisas">Camisas</option><option value="calcas">Calças</option><option value="shorts">Shorts</option><option value="tenis">Tênis</option><option value="acessorios">Acessórios</option>
+                            </select>
+                        </div>
+                        <div class="md:col-span-2"><label class="block text-xs font-bold text-gray-500 mb-1">TAMANHOS</label><input type="text" id="new-prod-size" class="w-full border p-2 rounded"></div>
+                    </div>
+                    <div class="flex gap-2 mt-6">
+                        <button id="btn-save" onclick="saveProductData()" class="bg-primary-dark text-white px-6 py-3 rounded hover:bg-black w-full md:w-auto font-bold transition">+ Adicionar</button>
+                        <button id="btn-cancel" onclick="resetForm()" class="hidden bg-gray-200 text-gray-700 px-6 py-3 rounded">Cancelar</button>
+                    </div>
+                </div>
+
+                <h3 class="font-bold mb-4 text-lg border-b pb-2">Produtos Cadastrados</h3>
+                <div id="admin-product-list" class="space-y-3 pb-8"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer id="contato" class="bg-primary-dark text-secondary-light pt-12 pb-6 mt-auto border-t-4 border-gray-800">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left">
+                <div class="flex flex-col items-center md:items-start">
+                    <img id="footer-logo" src="https://i.ibb.co/XfsFCjLy/Estilo-ver.png" alt="Logo Footer" class="h-16 w-auto mb-4 bg-white/10 p-1 rounded">
+                    <p class="text-sm text-gray-400 leading-relaxed max-w-xs">Moda masculina com autenticidade.</p>
+                </div>
+                <div class="flex flex-col items-center md:items-center">
+                    <h4 class="font-bold text-white uppercase mb-4 border-b border-gray-600 pb-1">Onde Estamos</h4>
+                    <p class="text-gray-400 text-sm mb-1">Rua Trinta e Um de Dezembro</p>
+                    <p class="text-green-400 text-sm font-semibold mt-2">Seg - Sex: 08:00h às 18:00h</p>
+                </div>
+                <div class="flex flex-col items-center md:items-end">
+                    <h4 class="font-bold text-white uppercase mb-4 border-b border-gray-600 pb-1">Fale Conosco</h4>
+                    <a id="footer-wa-link" href="#" class="flex items-center gap-2 text-xl font-bold text-white hover:text-green-400 mb-2">WhatsApp</a>
+                    <a id="footer-insta-link" href="#" target="_blank" class="text-gray-400 hover:text-white flex items-center gap-1">Instagram</a>
+                </div>
+            </div>
+            <div class="mt-12 pt-6 border-t border-gray-800 flex flex-col items-center justify-center text-xs text-gray-500 relative">
+                <p>Criado pela <strong class="text-white">AGENCIA DH</strong></p>
+                <p class="mt-1">&copy; 2025 Todos os direitos reservados.</p>
+                <button onclick="openAdminModal()" class="absolute right-0 bottom-0 p-2 text-gray-700 hover:text-gray-500 transition" title="Acesso Admin">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+                </button>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Firebase Script -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, addDoc, onSnapshot, doc, updateDoc, deleteDoc, getDocs, query } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        const firebaseConfig = JSON.parse(__firebase_config);
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+
+        // Produtos Padrão (Fallback Robust)
+        const defaultProducts = [
+            { id: "p1", name: "Costume Noir Slim", category: "camisas", price: 899.90, image: "https://i.ibb.co/vCPGbrtf/eestiloversatil-501275211-17864956095393827-6671465347994657498-n.jpg", sizes: "P, M, G, GG" },
+            { id: "p2", name: "Camisa Casual Texture", category: "camisas", price: 249.90, image: "https://i.ibb.co/QFd7677r/eestiloversatil-501061829-17864956347393827-5912497989800767435-n.jpg", sizes: "P, M, G, GG" },
+            { id: "p3", name: "Polo Clássica Piquet", category: "camisas", price: 189.90, image: "https://i.ibb.co/Rp5WVS2Q/eestiloversatil-501449283-17864956323393827-8203406227589948692-n.jpg", sizes: "P, M, G" },
+            { id: "p4", name: "Conjunto Executivo", category: "camisas", price: 1199.90, image: "https://i.ibb.co/x8q8q4bh/eestiloversatil-503697819-17865889653393827-799756769238709207-n.jpg", sizes: "40 ao 50" },
+            { id: "p5", name: "Blazer Cruzado", category: "camisas", price: 799.90, image: "https://i.ibb.co/nsLx05mb/eestiloversatil-504096996-17865889710393827-5749219804396509590-n.jpg", sizes: "P, M, G" },
+            { id: "p6", name: "Jaqueta Bomber Fina", category: "camisas", price: 389.90, image: "https://i.ibb.co/sdRPvfG6/eestiloversatil-517371705-17870817015393827-6432123587432947267-n.jpg", sizes: "P, M, G" },
+            { id: "p7", name: "Costume Grafite", category: "calcas", price: 950.00, image: "https://i.ibb.co/hxMbhXqZ/eestiloversatil-517931081-17870817147393827-2517976706713155844-n.jpg", sizes: "38 ao 48" },
+            { id: "p8", name: "T-Shirt Algodão Pima", category: "camisas", price: 149.90, image: "https://i.ibb.co/WCGJqg0/eestiloversatil-524818047-17873310231393827-2527121636608890805-n.jpg", sizes: "P, M, G, GG" },
+            { id: "p9", name: "Camisa Social Oxford", category: "camisas", price: 219.90, image: "https://i.ibb.co/PZ9NjmJd/eestiloversatil-539884391-17877000390393827-2849072198608397281-n.jpg", sizes: "P, M, G" }
+        ];
+
+        let products = [];
+        let displayProducts = [...defaultProducts]; // Inicializa com local para não ficar vazio
+
+        let siteConfig = {
+            logo: "https://i.ibb.co/XfsFCjLy/Estilo-ver.png",
+            heroBg: "https://images.unsplash.com/photo-1507679799987-c73779587ccf?q=80&w=2071&auto=format&fit=crop",
+            whatsapp: "5599984363859",
+            instagram: "https://www.instagram.com/eestiloversatil/"
+        };
+        let configDocId = null;
+
+        const initAuth = async () => {
+            try {
+                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                    await signInWithCustomToken(auth, __initial_auth_token);
+                } else {
+                    await signInAnonymously(auth);
+                }
+            } catch (error) {
+                console.error("Auth initialization failed", error);
+                // Fallback imediato em erro de auth
+                displayProducts = defaultProducts;
+                window.renderProducts();
+            }
+        };
+
+        let listenersSetup = false;
+        onAuthStateChanged(auth, (user) => {
+            if (user && !listenersSetup) {
+                setupRealtimeListeners();
+                listenersSetup = true;
+            }
+        });
+
+        initAuth();
+
+        function setupRealtimeListeners() {
+            const prodCol = collection(db, 'artifacts', appId, 'public', 'data', 'products');
+            onSnapshot(prodCol, (snapshot) => {
+                const dbProducts = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                
+                if (dbProducts.length > 0) {
+                    products = dbProducts;
+                    displayProducts = products;
+                } else {
+                    // DB vazia. Tentar seed se possível, senão usar default
+                    if (!localStorage.getItem('seeded')) {
+                        window.forceSeed().catch(e => console.log("Seed falhou (provavelmente permissões), usando local"));
+                    }
+                    displayProducts = defaultProducts;
+                }
+                window.renderProducts();
+                window.renderAdminList();
+            }, (err) => {
+                console.error("Erro ao ler produtos (permissões?), usando padrão local", err);
+                displayProducts = defaultProducts;
+                window.renderProducts();
+            });
+
+            const configCol = collection(db, 'artifacts', appId, 'public', 'data', 'site_config');
+            onSnapshot(configCol, (snapshot) => {
+                if (!snapshot.empty) {
+                    const docData = snapshot.docs[0];
+                    siteConfig = docData.data();
+                    configDocId = docData.id;
+                    window.applySiteConfig();
+                }
+            }, (err) => console.error("Config error", err));
+        }
+
+        // --- Expose to Window ---
+        window.forceSeed = async () => {
+            const prodCol = collection(db, 'artifacts', appId, 'public', 'data', 'products');
+            try {
+                for (const p of defaultProducts) {
+                    const { id, ...data } = p; // Remove ID local
+                    await addDoc(prodCol, data);
+                }
+                localStorage.setItem('seeded', 'true');
+                console.log("Base de dados populada");
+            } catch (e) {
+                console.error("Erro ao semear:", e);
+            }
+        };
+
+        window.saveProductData = async () => {
+            const name = document.getElementById('new-prod-name').value;
+            const price = parseFloat(document.getElementById('new-prod-price').value);
+            const image = document.getElementById('new-prod-img').value;
+            const category = document.getElementById('new-prod-cat').value;
+            const sizes = document.getElementById('new-prod-size').value;
+
+            if (!name || isNaN(price) || !image) { alert('Preencha os campos!'); return; }
+
+            const prodData = { name, price, image, category, sizes: sizes || "Padrão" };
+            const prodCol = collection(db, 'artifacts', appId, 'public', 'data', 'products');
+
+            try {
+                if (window.editingProductId) {
+                    await updateDoc(doc(prodCol, window.editingProductId), prodData);
+                    alert('Produto atualizado!');
+                } else {
+                    await addDoc(prodCol, prodData);
+                    alert('Produto adicionado!');
+                }
+                window.resetForm();
+            } catch (e) { alert('Erro ao salvar (verifique permissões): ' + e.message); }
+        };
+
+        window.deleteProduct = async (id) => {
+            if(confirm('Remover produto?')) {
+                try {
+                    await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'products', id));
+                } catch (e) { alert('Erro: ' + e.message); }
+            }
+        };
+
+        window.saveSiteConfig = async () => {
+            const logo = document.getElementById('config-logo').value;
+            const heroBg = document.getElementById('config-bg').value;
+            const whatsapp = document.getElementById('config-whatsapp').value;
+            const instagram = document.getElementById('config-instagram').value;
+
+            if(!logo || !heroBg || !whatsapp || !instagram) { alert("Preencha tudo."); return; }
+
+            const newConfig = { logo, heroBg, whatsapp, instagram };
+            const configCol = collection(db, 'artifacts', appId, 'public', 'data', 'site_config');
+
+            try {
+                if (configDocId) {
+                    await updateDoc(doc(configCol, configDocId), newConfig);
+                } else {
+                    await addDoc(configCol, newConfig);
+                }
+                alert("Configurações salvas!");
+            } catch (e) { alert("Erro: " + e.message); }
+        };
+
+        // --- Shared Logic ---
+        window.applySiteConfig = () => {
+            if(document.getElementById('header-logo')) document.getElementById('header-logo').src = siteConfig.logo;
+            if(document.getElementById('hero-logo')) document.getElementById('hero-logo').src = siteConfig.logo;
+            if(document.getElementById('footer-logo')) document.getElementById('footer-logo').src = siteConfig.logo;
+            if(document.getElementById('hero-bg')) document.getElementById('hero-bg').src = siteConfig.heroBg;
+            
+            const waText = `<svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.017-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg> (99) ${siteConfig.whatsapp.substring(2,7)}-${siteConfig.whatsapp.substring(7)}`;
+            
+            const waLink = document.getElementById('footer-wa-link');
+            if(waLink) { waLink.href = `https://wa.me/${siteConfig.whatsapp}`; waLink.innerHTML = waText; }
+            
+            const instaLink = document.getElementById('footer-insta-link');
+            if(instaLink) instaLink.href = siteConfig.instagram;
+
+            // Admin fields
+            if(document.getElementById('config-logo')) document.getElementById('config-logo').value = siteConfig.logo;
+            if(document.getElementById('config-bg')) document.getElementById('config-bg').value = siteConfig.heroBg;
+            if(document.getElementById('config-whatsapp')) document.getElementById('config-whatsapp').value = siteConfig.whatsapp;
+            if(document.getElementById('config-instagram')) document.getElementById('config-instagram').value = siteConfig.instagram;
+        };
+
+        window.renderProducts = (filterText = '') => {
+            const container = document.getElementById('products-grid');
+            if(!container) return;
+            container.innerHTML = '';
+
+            const filtered = displayProducts.filter(p => {
+                const matchesCategory = window.currentCategory === 'todos' || p.category === window.currentCategory;
+                const matchesSearch = p.name ? p.name.toLowerCase().includes(filterText.toLowerCase()) : false;
+                return matchesCategory && matchesSearch;
+            });
+
+            if (filtered.length === 0) {
+                container.innerHTML = '<div class="col-span-full text-center text-gray-500 py-10">Nenhum produto encontrado.</div>';
+                return;
+            }
+
+            filtered.forEach(p => {
+                // Se id não existe (no caso de fallback local sem DB), usa um aleatório ou index
+                const pId = p.id || 'local-' + Math.random().toString(36).substr(2, 9);
+                const card = `
+                <div class="group bg-white rounded-xl shadow-lg hover:shadow-2xl transition duration-300 overflow-hidden flex flex-col h-full border border-gray-100">
+                    <div class="aspect-[4/5] overflow-hidden relative">
+                        <img src="${p.image}" onerror="this.src='https://placehold.co/400x500?text=Sem+Foto'" alt="${p.name}" class="w-full h-full object-cover transition duration-500 group-hover:scale-105">
+                        <div class="absolute bottom-0 left-0 w-full bg-black/60 text-white text-xs p-1 text-center font-bold">Tam: ${p.sizes}</div>
+                    </div>
+                    <div class="p-4 flex flex-col flex-grow justify-between">
+                        <div>
+                            <h3 class="font-bold text-gray-900 leading-tight mb-1 text-lg">${p.name}</h3>
+                            <p class="text-xl font-extrabold text-primary-dark mb-4">R$ ${p.price.toFixed(2).replace('.', ',')}</p>
+                        </div>
+                        <button onclick="addToCart('${pId}')" class="w-full py-3 bg-primary-dark text-white rounded-lg hover:bg-gray-800 transition flex justify-center items-center gap-2 text-sm font-bold shadow-md transform active:scale-95">ADICIONAR</button>
+                    </div>
+                </div>`;
+                container.innerHTML += card;
+            });
+        };
+
+        window.renderAdminList = () => {
+            const list = document.getElementById('admin-product-list');
+            if(!list) return;
+            list.innerHTML = '';
+            const listToRender = products.length > 0 ? products : [];
+            
+            listToRender.forEach(p => {
+                list.innerHTML += `
+                    <div class="flex flex-col sm:flex-row justify-between items-center bg-white p-4 border rounded shadow-sm gap-4 hover:shadow-md transition">
+                        <div class="flex items-center gap-4 w-full">
+                            <img src="${p.image}" class="w-16 h-16 object-cover rounded bg-gray-200 border">
+                            <div><p class="font-bold text-gray-800 text-lg">${p.name}</p><p class="text-sm text-gray-500 font-mono">R$ ${p.price.toFixed(2)} | ${p.category}</p></div>
+                        </div>
+                        <div class="flex gap-3 w-full sm:w-auto justify-end">
+                            <button onclick="editProduct('${p.id}')" class="flex items-center gap-1 bg-blue-50 text-blue-600 border border-blue-200 px-4 py-2 rounded font-bold hover:bg-blue-100 transition"><span>✎</span> Editar</button>
+                            <button onclick="deleteProduct('${p.id}')" class="flex items-center gap-1 bg-red-50 text-red-600 border border-red-200 px-4 py-2 rounded font-bold hover:bg-red-100 transition"><span>🗑</span> Excluir</button>
+                        </div>
+                    </div>`;
+            });
+        };
+
+        window.editProduct = (id) => {
+            const prod = products.find(p => p.id === id);
+            if (!prod) return;
+            window.editingProductId = id;
+            document.getElementById('new-prod-name').value = prod.name;
+            document.getElementById('new-prod-price').value = prod.price;
+            document.getElementById('new-prod-img').value = prod.image;
+            document.getElementById('new-prod-cat').value = prod.category;
+            document.getElementById('new-prod-size').value = prod.sizes;
+            
+            const formTitle = document.getElementById('form-title');
+            formTitle.innerHTML = `<span class="bg-blue-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs">✎</span> Editando: ${prod.name}`;
+            formTitle.classList.add('text-blue-600');
+            document.getElementById('btn-save').innerText = "Salvar Alterações";
+            document.getElementById('btn-save').className = "bg-blue-600 text-white px-6 py-3 rounded hover:bg-blue-700 w-full md:w-auto font-bold transition shadow-md";
+            document.getElementById('btn-cancel').classList.remove('hidden');
+            document.querySelector('#admin-panel > div').scrollTo({ top: 0, behavior: 'smooth' });
+        };
+
+        window.resetForm = () => {
+            window.editingProductId = null;
+            document.getElementById('new-prod-name').value = '';
+            document.getElementById('new-prod-price').value = '';
+            document.getElementById('new-prod-img').value = '';
+            document.getElementById('new-prod-size').value = '';
+            const formTitle = document.getElementById('form-title');
+            formTitle.innerHTML = `Adicionar Novo Produto`;
+            formTitle.classList.remove('text-blue-600');
+            document.getElementById('btn-save').innerText = "+ Adicionar";
+            document.getElementById('btn-save').className = "bg-primary-dark text-white px-6 py-3 rounded hover:bg-black w-full md:w-auto font-bold transition";
+            document.getElementById('btn-cancel').classList.add('hidden');
+        };
+
+        // --- Cart Logic (Local) ---
+        window.cart = [];
+        window.addToCart = (id) => {
+            let product = displayProducts.find(p => p.id === id);
+            if (!product && id.startsWith('local-')) {
+                 // Recuperar de displayProducts pelo id simulado
+                 // Se não tiver id na prop, usa um método alternativo (não ideal mas funcional para fallback)
+            }
+            // Simplificação: Se estamos no fallback, o ID pode ser o nome ou índice.
+            // Para robustez total no modo fallback:
+            if (!product) {
+                 product = displayProducts.find(p => p.id === id || ('local-'+Math.random()).includes('local')); 
+                 // Na verdade, quando renderizamos o fallback, atribuímos IDs 'local-xyz'.
+                 // Precisamos encontrar esse item na lista displayProducts.
+                 // Como displayProducts é recriado ou é estático, podemos não ter persistência do ID gerado aleatoriamente.
+                 // CORREÇÃO RÁPIDA PARA FALLBACK: Usar o índice se ID não encontrado na DB
+            }
+            
+            // Re-finding logic for fallback stability
+            if(!product) {
+               // Try finding by properties match if ID fails
+               // This part is tricky without persistent local IDs.
+               // Let's assume user clicks on rendered card which has the ID.
+               // We will simply ensure renderProducts attaches the object itself or index? No, can't pass obj easily.
+               // We will stick to the fact that displayProducts IS the source of truth.
+               product = displayProducts.find(p => p.id === id);
+            }
+
+            if (product) {
+                window.cart.push(product);
+                window.updateCartUI();
+                const cartCount = document.getElementById('cart-count');
+                cartCount.classList.add('scale-125');
+                setTimeout(() => cartCount.classList.remove('scale-125'), 200);
+            }
+        };
+        
+        window.removeFromCart = (index) => { window.cart.splice(index, 1); window.updateCartUI(); };
+        window.toggleCart = () => { document.getElementById('cart-modal').classList.toggle('hidden'); };
+        window.updateCartUI = () => {
+            document.getElementById('cart-count').innerText = window.cart.length;
+            const itemsContainer = document.getElementById('cart-items');
+            const footer = document.getElementById('cart-footer');
+            const stickyBar = document.getElementById('sticky-checkout-bar');
+            const stickyTotal = document.getElementById('sticky-total');
+            const totalElModal = document.getElementById('cart-total');
+            let total = 0;
+            window.cart.forEach(item => total += item.price);
+            const totalFormatted = `R$ ${total.toFixed(2).replace('.', ',')}`;
+            itemsContainer.innerHTML = '';
+            if (window.cart.length === 0) {
+                itemsContainer.innerHTML = '<p class="text-gray-500 text-center py-4">Seu carrinho está vazio.</p>';
+                footer.classList.add('hidden');
+                stickyBar.classList.add('hidden');
+                stickyBar.classList.remove('flex');
+            } else {
+                window.cart.forEach((item, index) => {
+                    itemsContainer.innerHTML += `
+                        <div class="flex justify-between items-center bg-gray-50 p-3 rounded mb-2 border border-gray-100">
+                            <div class="flex items-center gap-3">
+                                <img src="${item.image}" class="w-12 h-12 object-cover rounded bg-gray-200">
+                                <div><p class="font-bold text-sm text-gray-800">${item.name}</p><p class="text-xs text-gray-500">R$ ${item.price.toFixed(2).replace('.', ',')}</p></div>
+                            </div>
+                            <button onclick="removeFromCart(${index})" class="text-red-500 hover:text-red-700 text-xs font-bold uppercase">Remover</button>
+                        </div>`;
+                });
+                totalElModal.innerText = totalFormatted;
+                footer.classList.remove('hidden');
+                stickyTotal.innerText = totalFormatted;
+                stickyBar.classList.remove('hidden');
+                stickyBar.classList.add('flex');
+            }
+        };
+        
+        window.currentCategory = 'todos';
+        window.filterCategory = (cat) => {
+            window.currentCategory = cat;
+            document.querySelectorAll('.cat-btn').forEach(btn => {
+                btn.classList.remove('bg-primary-dark', 'text-white', 'border-primary-dark');
+                btn.classList.add('bg-white', 'text-gray-700', 'border-gray-300');
+            });
+            event.target.classList.remove('bg-white', 'text-gray-700', 'border-gray-300');
+            event.target.classList.add('bg-primary-dark', 'text-white', 'border-primary-dark');
+            window.renderProducts();
+        };
+        window.filterProducts = (text) => { window.renderProducts(text); };
+        window.updateSizePlaceholder = () => {
+            const cat = document.getElementById('new-prod-cat').value;
+            const sizeInput = document.getElementById('new-prod-size');
+            if (cat === 'camisas') sizeInput.placeholder = "Ex: P, M, G, GG";
+            else if (cat === 'shorts') sizeInput.placeholder = "Ex: 20 ao 45";
+            else if (cat === 'calcas') sizeInput.placeholder = "Ex: 20 ao 50";
+            else if (cat === 'tenis') sizeInput.placeholder = "Ex: 28 ao 50";
+            else sizeInput.placeholder = "Tamanho Único ou descritivo";
+        };
+        window.toggleChangeInput = () => {
+            const method = document.getElementById('payment-method').value;
+            if (method === 'Dinheiro') document.getElementById('change-input-group').classList.remove('hidden');
+            else document.getElementById('change-input-group').classList.add('hidden');
+        };
+        window.toggleAddressInput = () => {
+            const option = document.getElementById('delivery-option').value;
+            if (option === 'entrega') document.getElementById('address-input-group').classList.remove('hidden');
+            else document.getElementById('address-input-group').classList.add('hidden');
+        };
+        window.checkoutWhatsApp = () => {
+            if (window.cart.length === 0) return;
+            let message = "*PEDIDO - LOJA ESTILO VERSÁTIL*\n\n*Itens:*\n";
+            let total = 0;
+            window.cart.forEach(item => {
+                message += `- ${item.name} (R$ ${item.price.toFixed(2).replace('.', ',')})\n`;
+                total += item.price;
+            });
+            message += `\n*Total: R$ ${total.toFixed(2).replace('.', ',')}*\n`;
+            
+            const deliveryOption = document.getElementById('delivery-option').value;
+            if (deliveryOption === 'entrega') {
+                const address = document.getElementById('delivery-address').value;
+                if (!address) { alert('Digite o endereço.'); return; }
+                message += `\n*Entrega:* Delivery\n*Endereço:* ${address}\n`;
+            } else { message += `\n*Entrega:* Retirar na Loja\n`; }
+
+            const payment = document.getElementById('payment-method').value;
+            message += `\n*Pagamento:* ${payment}\n`;
+            if (payment === 'Dinheiro') {
+                const change = document.getElementById('change-amount').value;
+                if (change) message += `*Troco para:* R$ ${parseFloat(change).toFixed(2).replace('.', ',')}\n`;
+                else message += `*Troco:* Não informado\n`;
+            }
+            window.open(`https://wa.me/${siteConfig.whatsapp}?text=${encodeURIComponent(message)}`, '_blank');
+        };
+
+        // Admin UI
+        window.openAdminModal = () => {
+            if (localStorage.getItem('ev_admin_logged') === 'true') document.getElementById('admin-panel').classList.remove('hidden');
+            else document.getElementById('admin-login-modal').classList.remove('hidden');
+        };
+        window.closeAdminModal = () => document.getElementById('admin-login-modal').classList.add('hidden');
+        window.checkAdminLogin = () => {
+            if (document.getElementById('admin-password').value === '1234') {
+                localStorage.setItem('ev_admin_logged', 'true');
+                window.closeAdminModal();
+                document.getElementById('admin-panel').classList.remove('hidden');
+            } else { alert('Senha incorreta!'); }
+        };
+        window.logoutAdmin = () => {
+            localStorage.removeItem('ev_admin_logged');
+            document.getElementById('admin-panel').classList.add('hidden');
+        };
+        
+        // Initial render
+        window.renderProducts();
+    </script>
+</body>
+</html>
